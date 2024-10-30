@@ -6,6 +6,16 @@ You can access the paper in the following ways:
 - View the [official PMLR publication](https://proceedings.mlr.press/v255/zimmering24a.html).
 - Download the local version of the paper [here](zimmering24a.pdf).
 
+## Library for Neural Fractional Differential Equations
+
+We’ve packaged the optimized solver for Neural Fractional Differential Equations (NFDEs) from this research as a standalone tool. This library, now available as the `FDEint` package on PyPI, reflects the latest advancements detailed in our paper and can be installed with the following command:
+
+```bash
+pip install FDEint
+```
+
+For questions or to report issues, feel free to open an issue on our [FDEint repository](https://github.com/zimmer-ing/FDEint).
+
 
 ## Abstract
 Neural Ordinary Differential Equations (NODEs) are well-established architectures that fit an ODE, modelled by a neural network (NN), to data, effectively modelling complex dynamical systems. Recently, Neural Fractional Differential Equations (NFDEs) were proposed, inspired by NODEs, to incorporate non-integer order differential equations, capturing memory effects and long-range dependencies. In this work, we present an optimised implementation of the NFDE solver, achieving up to 570 times faster computations and up to 79 times higher accuracy. Additionally, the solver supports efficient multidimensional computations and batch processing. Furthermore, we enhance the experimental design to ensure a fair comparison of NODEs and NFDEs by implementing rigorous hyperparameter tuning and using consistent numerical methods. Our results demonstrate that for systems exhibiting fractional dynamics, NFDEs significantly outperform NODEs, particularly in extrapolation tasks on unseen time horizons. Although NODEs can learn fractional dynamics when time is included as a feature to the NN, they encounter difficulties in extrapolation due to reliance on explicit time dependence.
