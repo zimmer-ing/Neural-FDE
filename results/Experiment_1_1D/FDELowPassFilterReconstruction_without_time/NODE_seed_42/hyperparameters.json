@@ -1,0 +1,1 @@
+{"training": {"learning_rate": 0.0062330313524246285, "gamma_scheduler": 0.9999730424574853}, "model": {"hidden_size_ODE": 76, "n_layers_hidden_ODE": 3, "activation_ODE": "relu"}}

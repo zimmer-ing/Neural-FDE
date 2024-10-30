@@ -42,13 +42,13 @@ class HomogeneousFDEDataset(DatasetBase):
                 },
                 "alpha": 0.9,
                 "noise": 0.0,
-                "inital_values_range": [-1, 1],
+                "initial_values_range": [-1, 1],
                 "time_step_simulation": 0.01,
                 "final_time": 3,
                 "seed": 42
             }
         assert data_parameters["noise"] >= 0
-        assert data_parameters["inital_values_range"][0] <= data_parameters["inital_values_range"][1]
+        assert data_parameters["initial_values_range"][0] <= data_parameters["initial_values_range"][1]
         assert data_parameters["time_step_simulation"] > 0
         assert data_parameters["final_time"] > 0
         assert data_parameters["seed"] is not None
@@ -118,12 +118,13 @@ def mod_task_parameters(data_parameters,dataset_type):
     task = data_parameters["Task"]
     task_parameters = data_parameters["TaskParameters"]
     if task == "Reconstruction":
-        data_parameters["TaskParameters"]["initial_values_range_validation"] = task_parameters.get(
-            "initial_values_range_validation", [-1, 1]
-        )
-        data_parameters["TaskParameters"]["initial_values_range_test"] = task_parameters.get(
-            "initial_values_range_test", [-1, 1]
-
+        if dataset_type == 'validation':
+            data_parameters["initial_values_range"] = task_parameters.get(
+                "initial_values_range_validation", [-1.5, 1.5]
+            )
+        elif dataset_type == 'test':
+            data_parameters["initial_values_range"] = task_parameters.get(
+                "initial_values_range_test", [-3, 3]
         )
         #change the seed +1 for the next task
         data_parameters["seed"] += 1
@@ -212,7 +213,7 @@ def generate_single_sample(config):
         dim_y = 3
 
 
-    initial_value = np.random.uniform(*config["inital_values_range"],dim_y)
+    initial_value = np.random.uniform(*config["initial_values_range"],dim_y)
 
     t = np.arange(0, config["final_time"], config["time_step_simulation"])
 
@@ -340,7 +341,7 @@ if __name__ == "__main__":
             },
             "alpha": 0.96,
             "noise": 0.0,
-            "inital_values_range": [-2, 2],
+            "initial_values_range": [-2, 2],
             "time_step_simulation": 0.005,
             "final_time": 3,
             "seed": 42
@@ -362,7 +363,7 @@ if __name__ == "__main__":
         },
         "noise": 0.0,
         "alpha": 0.5,
-        "inital_values_range": [-1, 1],
+        "initial_values_range": [-1, 1],
         "time_step_simulation": 0.00025,
         "final_time": 20,
         "seed": 42
@@ -382,7 +383,7 @@ if __name__ == "__main__":
         },
         "noise": 0.0,
         "alpha": 0.9,
-        "inital_values_range": [-1, 1],
+        "initial_values_range": [-1, 1],
         "time_step_simulation": 0.01,
         "final_time": 20,
         "seed": 42
@@ -402,7 +403,7 @@ if __name__ == "__main__":
         },
         "noise": 0.0,
         "alpha": 0.8,
-        "inital_values_range": [-1, 1],
+        "initial_values_range": [-1, 1],
         "time_step_simulation": 0.1,
         "final_time": 1.5,
         "seed": 42
@@ -423,7 +424,7 @@ if __name__ == "__main__":
         },
         "noise": 0.0,
         "alpha": 0.5,
-        "inital_values_range": [-1, 1],
+        "initial_values_range": [-1, 1],
         "time_step_simulation": 0.005,
         "final_time": 7.5,
         "seed": 42

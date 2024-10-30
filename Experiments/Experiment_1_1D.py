@@ -65,77 +65,7 @@ def create_config(model_type='NODE', FLAG_TEST=False, Dataset='DampedOscillatorR
     else:
         raise ValueError(f"Dataset {Dataset} not recognized.")
 
-    if 'DampedOscillator' in Dataset:
-        if 'ODE' in Dataset:
-            config['training']['epochs'] = 200
-            config['data'].update({'dim_x': 0, 'dim_y': 2})
-            task_type = 'Reconstruction' if 'Reconstruction' in Dataset else 'Extrapolation'
-            if task_type == 'Reconstruction':
-                task_param = {
-                    'initial_values_range_validation': [-1, 1],
-                    'initial_values_range_test': [-1, 1]
-                }
-            elif task_type == 'Extrapolation':
-                task_param = {
-                    'final_time_validation': 8.25,
-                    'final_time_test': 15
-                }
-            else:
-                raise ValueError(f"Task {task_type} not recognized.")
-            data_config = {
-                "n_samples": 5,
-                "ODESystem": 'DampedOscillator',
-                "Task": task_type,
-                "TaskParameters": task_param,
-                "SystemParameters": {
-                    "m": 1,  # mass
-                    "dc": 0.1,  # damping coefficient
-                    "sc": 1  # spring constant
-                },
-                "noise": 0.0,
-                "inital_values_range": [-1, 1],
-                "time_step_simulation": 0.1,
-                "final_time": 20 if task_type == 'Reconstruction' else 7.5,
-                "seed": 42
-            }
-        elif 'FDE' in Dataset:
-            config['training']['epochs'] = 150
-            config['data'].update({'dim_x': 0, 'dim_y': 2})
-            task_type = 'Reconstruction' if 'Reconstruction' in Dataset else 'Extrapolation'
-            if task_type == 'Reconstruction':
-                task_param = {
-                    'initial_values_range_validation': [-2, 2],
-                    'initial_values_range_test': [-1.1, 1.1]
-                }
-            elif task_type == 'Extrapolation':
-                task_param = {
-                    'final_time_validation': 8.25,
-                    'final_time_test': 15
-                }
-            else:
-                raise ValueError(f"Task {task_type} not recognized.")
-            data_config = {
-                "n_samples": 80,
-                "System": 'DampedOscillator',
-                "Task": task_type,
-                "TaskParameters": task_param,
-                "SystemParameters": {
-                    "m": 1,  # mass
-                    "dc": 0.6,  # damping coefficient
-                    "sc": 10,  # spring constant
-                    "f": 0  # applied force
-                },
-                "noise": 0.0,
-                "alpha": 0.5,
-                "inital_values_range": [-1, 1],
-                "time_step_simulation": 0.005,
-                "final_time": 15 if task_type == 'Reconstruction' else 7.5,
-                "seed": 42
-            }
-        else:
-            raise ValueError(f"Dataset {Dataset} not recognized.")
-
-    elif 'LowPassFilter' in Dataset:
+    if 'LowPassFilter' in Dataset:
         if 'ODE' in Dataset:
             config['training']['epochs'] = 50
             config['data'].update({'dim_x': 0, 'dim_y': 1})
@@ -162,7 +92,7 @@ def create_config(model_type='NODE', FLAG_TEST=False, Dataset='DampedOscillatorR
                     "final_value": 0  # final value
                 },
                 "noise": 0.0,
-                "inital_values_range": [-1, 1],
+                "initial_values_range": [-1, 1],
                 "time_step_simulation": 0.1,
                 "final_time": 20 if task_type == 'Reconstruction' else 1.5,
                 "seed": 42
@@ -173,8 +103,8 @@ def create_config(model_type='NODE', FLAG_TEST=False, Dataset='DampedOscillatorR
             task_type = 'Reconstruction' if 'Reconstruction' in Dataset else 'Extrapolation'
             if task_type == 'Reconstruction':
                 task_param = {
-                    'initial_values_range_validation': [-2, 2],
-                    'initial_values_range_test': [-1.5, 1.5]
+                    'initial_values_range_validation': [-1.5, 1.5],
+                    'initial_values_range_test': [-2, 2]
                 }
             elif task_type == 'Extrapolation':
                 task_param = {
@@ -194,7 +124,7 @@ def create_config(model_type='NODE', FLAG_TEST=False, Dataset='DampedOscillatorR
                 },
                 "noise": 0.0,
                 "alpha": 0.8,
-                "inital_values_range": [-1, 1],
+                "initial_values_range": [-1, 1],
                 "time_step_simulation": 0.1,
                 "final_time": 20 if task_type == 'Reconstruction' else 1.5,
                 "seed": 42
@@ -202,31 +132,6 @@ def create_config(model_type='NODE', FLAG_TEST=False, Dataset='DampedOscillatorR
         else:
             raise ValueError(f"Dataset {Dataset} not recognized.")
 
-    elif 'BloodClot' in Dataset:
-        data_config = {}
-        config['data'].update({'dim_x': 1, 'dim_y': 1})
-    elif 'LorenzSystem' in Dataset:
-        config['data'].update({'dim_x': 0, 'dim_y': 3})
-        data_config = {
-            "n_samples": 250,
-            "System": 'LorenzSystem',
-            "Task": "Reconstruction",
-            "TaskParameters": {
-                "initial_values_range_validation": [-1, 1],
-                "initial_values_range_test": [-1.25, 1.25],
-            },
-            "SystemParameters": {
-                "a": 8,
-                "b": 10,
-                "c": 1.5
-            },
-            "alpha": 0.96,
-            "noise": 0.0,
-            "inital_values_range": [-1, 1],
-            "time_step_simulation": 0.005,
-            "final_time": 3,
-            "seed": 42
-        }
     else:
         raise ValueError(f"Dataset {Dataset} not recognized.")
 
@@ -269,16 +174,6 @@ def setup_model(model_type, config):
     elif model_type == 'FDE':
         config['model'].update({'augmented_dim': 0, 'augmentation_type': 'none'})
         model = FDE_Model(config)
-    elif model_type == 'FDE_fix_alpha':
-        config['model'].update({'augmented_dim': 0, 'augmentation_type': 'none'})
-        model = FDE_Model(config)
-    elif model_type == 'FDE_augmented':
-        model = FDE_Model(config)
-    elif model_type == 'NODE_augmented':
-        config['model'].update({'solver': 'explicit_adams'})
-        model = NODE_Model(config)
-    elif model_type == 'Laplace':
-        model = Laplace_Model(config)
     else:
         raise ValueError(f"Model type {model_type} not recognized.")
     return model,config
@@ -286,30 +181,18 @@ def setup_model(model_type, config):
 
 def setup_searchspace(model_type,dataset):
     search_space = {'training':
-                        {'learning_rate': tune.loguniform(1e-5, 5e-1),
+                        {'learning_rate': tune.uniform(1e-5, 5e-1),
                         #'batch_size': tune.choice([10,20,30,40,50]),
                         'gamma_scheduler':tune.uniform(0.999,1),
                          },
                     'model':{}
                     }
-    if dataset=='BloodClot':
-        #we can only use batch size 1
-        search_space['training']['batch_size']=tune.choice([1])
 
     if model_type == 'NODE':
         search_space['model'].update(
             {'hidden_size_ODE': tune.randint(10, 101),
              'n_layers_hidden_ODE': tune.randint(1, 5),
              'activation_ODE': tune.choice(['relu', 'leaky_relu', 'elu','none'])
-             }
-        )
-    elif model_type == 'NODE_augmented':
-        search_space['model'].update(
-            {'hidden_size_ODE': tune.randint(10, 101),
-             'n_layers_hidden_ODE': tune.randint(1, 5),
-             'activation_ODE': tune.choice(['relu', 'leaky_relu', 'elu','none']),
-             'augmented_dim': tune.randint(1, 5),
-             'augmentation_type': tune.choice(['zeros'])
              }
         )
     elif model_type == 'FDE':
@@ -320,31 +203,9 @@ def setup_searchspace(model_type,dataset):
              'alpha': tune.uniform(0.5, 1.0)
              }
         )
-    elif model_type == 'FDE_fix_alpha':
-        search_space['model'].update(
-            {'hidden_size_FDE': tune.randint(10, 101),
-             'n_layers_hidden_FDE': tune.randint(1, 5),
-             'activation_FDE': tune.choice(['relu', 'leaky_relu', 'elu','none']),
-             }
-        )
-    elif model_type == 'FDE_augmented':
-        search_space['model'].update(
-            {'hidden_size_FDE': tune.randint(10, 101),
-             'n_layers_hidden_FDE': tune.randint(1, 5),
-             'activation_FDE': tune.choice(['relu', 'leaky_relu', 'elu','none']),
-             'alpha': tune.uniform(0.25, 0.75),
-             'augmented_dim': tune.randint(1, 5),
-             'augmentation_type': tune.choice(['zeros'])
-             }
-        )
-    elif model_type == 'Laplace':
-        search_space['model'].update(
-            {'hidden_size_Laplace': tune.randint(10, 101),
-             'n_layers_hidden_Laplace': tune.randint(1, 5),
-            'activation_LPF': tune.choice(['relu', 'leaky_relu', 'tanh', 'elu']),
-             'ilt_reconstruction_terms': tune.choice([11, 21, 31, 41, 51, 61, 71, 81, 91, 101])# odd number of terms in the reconstruction
-             }
-        )
+
+
+
     return search_space
 
 # Training function
