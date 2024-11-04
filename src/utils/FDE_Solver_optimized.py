@@ -186,7 +186,7 @@ if __name__ == "__main__":
     # Define the data types we want to test the solver with
     data_types = [torch.float32, torch.float64]
     results = {}
-    num_steps = 1000  # Number of steps for the time discretization
+    num_steps = 4000  # Number of steps for the time discretization
 
     # Loop over the defined data types (float32 and float64)
     for dtype in data_types:
