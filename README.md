@@ -120,14 +120,3 @@ pdf = {https://raw.githubusercontent.com/mlresearch/v255/main/assets/zimmering24
 url = {https://proceedings.mlr.press/v255/zimmering24a.html},  
 abstract = {Neural Ordinary Differential Equations (NODEs) are well-established architectures that fit an ODE, modelled by a neural network (NN), to data, effectively modelling complex dynamical systems. Recently, Neural Fractional Differential Equations (NFDEs) were proposed, inspired by NODEs, to incorporate non-integer order differential equations, capturing memory effects and long-range dependencies. In this work, we present an optimised implementation of the NFDE solver, achieving up to 570 times faster computations and up to 79 times higher accuracy. Additionally, the solver supports efficient multidimensional computations and batch processing. Furthermore, we enhance the experimental design to ensure a fair comparison of NODEs and NFDEs by implementing rigorous hyperparameter tuning and using consistent numerical methods. Our results demonstrate that for systems exhibiting fractional dynamics, NFDEs significantly outperform NODEs, particularly in extrapolation tasks on unseen time horizons. Although NODEs can learn fractional dynamics when time is included as a feature to the NN, they encounter difficulties in extrapolation due to reliance on explicit time dependence. The code is available at https://github.com/zimmer-ing/Neural-FDE}}
 ```
-or if you directly want to cite this repository:
-```
-@misc{zimmering_neural_fde_2024,
-    author       = {Bernd Zimmering and Cec\'{\i}lia Coelho and Oliver Niggemann},
-    title        = {Code for Optimising Neural Fractional Differential Equations for Performance and Efficiency},
-    year         = {2024},
-    url          = {https://github.com/zimmer-ing/Neural-FDE},
-    note         = {GitHub repository},
-    howpublished = {\url{https://github.com/zimmer-ing/Neural-FDE}}
-}
-```
